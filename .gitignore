@@ -1,0 +1,6 @@
+*.swp
+/*
+!/doc
+!/plugin
+!/README.md
+!/.gitignore
