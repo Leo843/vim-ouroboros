@@ -7,9 +7,24 @@ if exists("g:loaded_ouroboros")
 endif
 let g:loaded_ouroboros=1
 
-" Path to the file that contains all Ouroboros entries. An Ouroboros entry is a
-" line containing words separated by at least one space/tab.
-let g:ouroboros_db='$HOME/.vim/ouroboros.db'
+" Return the directory that contains this script (symlinks are resolved).
+function! s:This_script_dir()
+  return fnamemodify(resolve(expand('<sfile>:p')), ':h')
+endfunction
+
+" Return the path to the default database file
+function! s:Default_database_file_path()
+  return  '' . s:This_script_dir() . '/db/ouroboros.db'
+endfunction
+
+" If the user did not provide any path, then set the default path for the
+" database file.
+if !exists("g:ouroboros_db")
+  let g:ouroboros_db=s:Default_database_file_path()
+  if !filereadable(g:ouroboros_db)
+    echoerr 'Ouroboros error: default db "'.g:ouroboros_db.'" cannot be read'
+  endif
+endif
 
 " preconditions:
 "   a:candidates is a string containings words separated by spaces/tabs and a:word
