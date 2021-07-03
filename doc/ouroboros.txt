@@ -1,0 +1,27 @@
+*ouroboros.txt*  Plugin for replacing words by related words
+
+Author:  Leo Carpenter <leo.carpenter.pro@gmail.com>
+License: Same terms as Vim itself (see |license|)
+
+INTRODUCTION                                    *ouroboros*
+
+This plugin allows the user to replace the word under cursor by other words with
+related (often symmetrical) meanings (e.g. true/false, begin/end, insert/remove,
+one/two/three/..., ...). The replacement is performed cyclically based on a list
+of words defined in a database file.
+
+ENTRYPOINT                                      *ouroboros-entrypoint*
+
+The entry point of the plugin is the function called Ouroboros(). No default
+mapping is provided, the user has to define one in order to use the plugin. Here
+is an example of such mapping using <leader>o as keyboard shortcut.
+
+  nnoremap <silent> <leader>o :call Ouroboros()<CR>
+
+DATABASE                                        *ouroboros-database*
+
+The database containing replacement words is a file whose location is set in
+variable g:ouroboros_db. By default the location is set to
+$HOME/.vim/ouroboros.db. The user can change this location as shown below.
+
+  let g:ouroboros_db='$HOME/.vim/path/to/file'
