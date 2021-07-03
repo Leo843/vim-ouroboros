@@ -80,5 +80,3 @@ function! Ouroboros()
     echo 'Ouroboros error: ' . v:exception
   endtry
 endfunction
-
-nnoremap <silent> <leader>o :call Ouroboros()<CR>
