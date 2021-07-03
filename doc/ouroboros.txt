@@ -16,7 +16,7 @@ The entry point of the plugin is the function called Ouroboros(). No default
 mapping is provided, the user has to define one in order to use the plugin. Here
 is an example of such mapping using <leader>o as keyboard shortcut.
 
-  nnoremap <silent> <leader>o :call Ouroboros()<CR>
+  nmap <silent> <leader>o :call Ouroboros()<CR>
 
 DATABASE                                        *ouroboros-database*
 
