@@ -17,13 +17,19 @@ function! Ouroboros_default_database_file_path()
   return  '' . s:Plugin_root_dir() . '/db/ouroboros.db'
 endfunction
 
+" Reset g:ouroboros_db with the default database path
+function! Ouroboros_set_default_database()
+  let l:default_db=Ouroboros_default_database_file_path()
+  let g:ouroboros_db=[l:default_db]
+  if !filereadable(l:default_db)
+    echoerr 'Ouroboros error: default db "'.l:default_db.'" cannot be read'
+  endif
+endfunction
+
 " If the user did not provide any path, then set the default path for the
 " database file.
 if !exists("g:ouroboros_db")
-  let g:ouroboros_db=Ouroboros_default_database_file_path()
-  if !filereadable(g:ouroboros_db)
-    echoerr 'Ouroboros error: default db "'.g:ouroboros_db.'" cannot be read'
-  endif
+  call Ouroboros_set_default_database()
 endif
 
 " preconditions:
@@ -58,7 +64,13 @@ endfunction
 "   first line containing a:word is returned, otherwise, an empty string is
 "   returned.
 function! Ouroboros_candidates(word)
-  return matchstr(readfile(expand(g:ouroboros_db)), a:word)
+  for db in g:ouroboros_db
+    let l:candidates=matchstr(readfile(expand(db)), a:word)
+    if strlen(l:candidates) > 0
+      return l:candidates
+    endif
+  endfor
+  return ''
 endfunction
 
 " Ouroboros entry point
