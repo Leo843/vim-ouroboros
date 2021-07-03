@@ -57,6 +57,15 @@ function! Ouroboros_new_word(word, candidates)
   endif
 endfunction
 
+" Return databases attached to the current buffer if any, otherwise return the
+" global databases.
+function! Ouroboros_databases()
+  if exists("b:ouroboros_db")
+    return b:ouroboros_db
+  else
+    return g:ouroboros_db
+endfunction
+
 " preconditions:
 "   a:word is a word (avoid special characters)
 " postconditions:
@@ -64,7 +73,7 @@ endfunction
 "   first line containing a:word is returned, otherwise, an empty string is
 "   returned.
 function! Ouroboros_candidates(word)
-  for db in g:ouroboros_db
+  for db in Ouroboros_databases()
     let l:candidates=matchstr(readfile(expand(db)), a:word)
     if strlen(l:candidates) > 0
       return l:candidates
