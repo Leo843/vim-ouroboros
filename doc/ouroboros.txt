@@ -20,8 +20,20 @@ is an example of such mapping using <leader>o as keyboard shortcut.
 
 DATABASE                                        *ouroboros-database*
 
-The database containing replacement words is a file whose location is set in
-variable g:ouroboros_db. By default the location is set to
-$HOME/.vim/ouroboros.db. The user can change this location as shown below.
+The databases containing replacement words is a list of files and locations are
+set in variable g:ouroboros_db. By default the list contained one location set
+to <plugin-path>/db/ouroboros.db. The user can change this location as shown
+below.
 
-  let g:ouroboros_db='$HOME/.vim/path/to/file'
+  let g:ouroboros_db=['path/to/first/file','path/to/second/file']
+
+Databases defined in g:ouroboros_db applied to all buffers by default. However,
+this behavior can be changed for a buffer by setting b:ouroboros_db with a list
+of files to use for this a buffer instead of the global databases. This can be
+automated by setting b:ouroboros_db in files defined in ftplugin/. The example
+below set a specific database for cpp files.
+
+  ~/.vim/ftplugin/cpp.vim
+    1
+    2 let b:ouroboros_db=['~/.ouroboros_cpp.db']
+    3
