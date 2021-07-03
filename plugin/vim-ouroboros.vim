@@ -32,7 +32,7 @@ endif
 " postconditions:
 "   The next word after a:word in a:candidates is returned. If a:word id the
 "   last word in a:candidates, then the first word of the string is returned.
-function Ouroboros_new_word(word, candidates)
+function! Ouroboros_new_word(word, candidates)
   " get a list of words from a string
   let l:candidates = split(a:candidates)
   " find the index of the current word
