@@ -1,4 +1,4 @@
-let test="replace 'false' by 'true'"
+let test="replace 'one' until 'three'"
 
 " load plugin
 set rtp+=.
@@ -18,14 +18,14 @@ let g:ouroboros_db=[db]
 "   set mapping
 nmap <silent> , :call Ouroboros()<CR>
 "   set test line
-call setline(1, 'false')
+call setline(1, 'one')
 call cursor(1,1)
 
 " perform operation
-normal ,
+normal ,,
 
 " test the result
-if getline('.') == "true"
+if getline('.') == "three"
   exe 'silent !echo "' . test . ' => success"'
 else
   exe 'silent !echo "' . test . ' => failure"'
