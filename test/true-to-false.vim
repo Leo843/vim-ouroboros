@@ -6,7 +6,8 @@ source ./plugin/vim-ouroboros.vim
 nmap <silent> , :call Ouroboros()<CR>
 
 " setup initial state
-normal itrue
+call setline(1, 'true')
+call cursor(1,1)
 
 " perform operation
 normal ,
