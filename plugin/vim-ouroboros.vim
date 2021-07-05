@@ -29,10 +29,10 @@ if !exists("g:ouroboros_db")
 endif
 
 " preconditions:
-"   a:candidates is a string containings words separated by spaces/tabs and a:word
-"   is a one of those words.
+"   a:candidates is a string containings words separated by spaces/tabs and
+"   a:word is a one of those words.
 " postconditions:
-"   The next word after a:word in a:candidates is returned. If a:word id the
+"   The next word after a:word in a:candidates is returned. If a:word is the
 "   last word in a:candidates, then the first word of the string is returned.
 function! Ouroboros_new_word(word, candidates)
   " get a list of words from a string
@@ -65,9 +65,8 @@ endfunction
 " preconditions:
 "   a:word is a word (avoid special characters)
 " postconditions:
-"   A string is returned. If a:word exists in file g:ouroboros_db, then the
-"   first line containing a:word is returned, otherwise, an empty string is
-"   returned.
+"   A string is returned. If a:word exists in database files, then the first
+"   line containing a:word is returned, otherwise, an empty string is returned.
 function! Ouroboros_candidates(word)
   for db in Ouroboros_databases()
     let l:candidates=matchstr(readfile(expand(db)), a:word)
@@ -80,9 +79,10 @@ endfunction
 
 " Ouroboros entry point
 "
-" Replace the word under cursor by the next word define in the first entry in
-" the Ouroboros database file. If the word undex cursor is not define in the
-" Ouroboros database file, then nothing happens.
+" Replace the word under the cursor by the next word define in the first entry
+" in the Ouroboros database files. If the word under the cursor is not define in
+" Ouroboros database files, then nothing happens (a message is printed in vim
+" footer notifying that no replacement has been found).
 function! Ouroboros()
   try
     let l:old_word = expand("<cword>")

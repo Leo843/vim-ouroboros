@@ -34,6 +34,6 @@ automated by setting b:ouroboros_db in files defined in ftplugin/. The example
 below set a specific database for cpp files.
 
   ~/.vim/ftplugin/cpp.vim
-    1
-    2 let b:ouroboros_db=['~/.ouroboros_cpp.db']
-    3
+    ~
+    ~ let b:ouroboros_db=['~/.ouroboros_cpp.db']
+    ~

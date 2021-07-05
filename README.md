@@ -7,7 +7,6 @@ list of words defined in a database file.
 
 ### How this plugin increases productivity?
 
-
 Ouroboros can be used to quickly replace words after copy/paste operations. The
 example below shows a method being copy/paste and renamed with Ouroboros.
 
