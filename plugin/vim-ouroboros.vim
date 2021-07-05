@@ -7,23 +7,19 @@ if exists("g:loaded_ouroboros")
 endif
 let g:loaded_ouroboros=1
 
-" Return the root directory of the plugin (symlinks are resolved).
-function! s:Plugin_root_dir()
-  return fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
-endfunction
-
-" Return the path to the default database file
-function! Ouroboros_default_database_file_path()
-  return  '' . s:Plugin_root_dir() . '/db/ouroboros.db'
-endfunction
+" path to this script with symlinks resolved
+let s:this_script_filepath=resolve(expand('<sfile>:p'))
+" path to the root dir of the plugin
+let s:this_plugin_root_dir=fnamemodify(s:this_script_filepath, ':h:h')
+" path to the default database
+let s:default_database_filepath='' . s:this_plugin_root_dir . '/db/ouroboros.db'
 
 " Reset g:ouroboros_db with the default database path
 function! Ouroboros_set_default_database()
-  let l:default_db=Ouroboros_default_database_file_path()
-  let g:ouroboros_db=[l:default_db]
-  if !filereadable(l:default_db)
-    echoerr 'Ouroboros error: default db "'.l:default_db.'" cannot be read'
+  if !filereadable(s:default_database_filepath)
+    echoerr 'Ouroboros error: '.s:default_database_filepath.' cannot be read'
   endif
+  let g:ouroboros_db=[s:default_database_filepath]
 endfunction
 
 " If the user did not provide any path, then set the default path for the
