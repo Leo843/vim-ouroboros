@@ -3,7 +3,6 @@ let test="replace 'true' by 'false'"
 " load plugin
 set rtp+=.
 source ./plugin/vim-ouroboros.vim
-nmap <silent> , :call Ouroboros()<CR>
 
 " setup initial state
 "   create database
