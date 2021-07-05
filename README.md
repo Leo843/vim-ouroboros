@@ -122,3 +122,9 @@ start stop
 Databases can also be set per buffers with `b:ouroboros_db`. This allows the use
 of different databases based on the `filetype` of the buffer (see `:h
 ouroboros-database` for more information).
+
+## Roadmap
+
+[ ] Replace string starting with an upper case letter.
+[ ] Replace string containing upper case letters only.
+[ ] Handle text objects instead of words only.
