@@ -126,5 +126,7 @@ ouroboros-database` for more information).
 ## Roadmap
 
 [ ] Replace string starting with an upper case letter.
+
 [ ] Replace string containing upper case letters only.
+
 [ ] Handle text objects instead of words only.
