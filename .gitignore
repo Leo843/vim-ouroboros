@@ -3,5 +3,7 @@
 !/doc
 !/plugin
 !/db
+!/test
+!/test.sh
 !/README.md
 !/.gitignore
