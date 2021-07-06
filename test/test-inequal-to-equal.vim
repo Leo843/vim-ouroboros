@@ -1,8 +1,6 @@
-let test="replace 'one' until 'three'"
+let test="replace '!=' by '=='"
 
-function Echo(str)
-  exe 'silent !echo "' . escape(a:str,'!') . '"'
-endfunction
+source test/utility.vim
 
 try
   " load plugin
@@ -12,9 +10,7 @@ try
   " setup initial state
   "   create database
   let lines= [
-        \ 'true false',
-        \ 'begin end',
-        \ 'one two three'
+        \ '== !='
         \ ]
   let db='/tmp/ouroboros_test_db'
   call writefile(lines,db)
@@ -23,14 +19,14 @@ try
   "   set mapping
   nmap <silent> , :call Ouroboros()<CR>
   "   set test line
-  call setline(1, 'one')
+  call setline(1, '!=')
   call cursor(1,1)
 
   " perform operation
-  normal ,,
+  normal ,
 
   " test the result
-  if getline('.') == "three"
+  if getline('.') == "=="
     call Echo(test . ' => success')
   else
     call Echo(test . ' => failure')

@@ -1,8 +1,6 @@
 let test="use buffer databases instead of global databases"
 
-function Echo(str)
-  exe 'silent !echo "' . escape(a:str,'!') . '"'
-endfunction
+source test/utility.vim
 
 try
   " load plugin
