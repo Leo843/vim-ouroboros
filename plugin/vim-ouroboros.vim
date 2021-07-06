@@ -77,6 +77,48 @@ function! Ouroboros_candidates(word)
   return ''
 endfunction
 
+" preconditions:
+"   a:str is a string without whitespaces ro tabulations.
+" postconditions:
+"   A replacement string is returned. If no replacement is found, an empty
+"   string is returned.
+function! Ouroboros_find(str)
+    let l:candidates = Ouroboros_candidates(a:str)
+    if strlen(l:candidates) > 0
+      return Ouroboros_new_word(a:str,l:candidates)
+    else
+      return ''
+    endif
+endfunction
+
+" preconditions:
+"   a:str is a string.
+" postconditions:
+"   The word under the cursor is replaced by a:str.
+function! Ouroboros_replace(str)
+  exe "normal ciw" . a:str
+endfunction
+
+function! Is_upper(str)
+  return a:str == toupper(a:str)
+endfunction
+
+function! Has_alpha(str)
+  return match(a:str,'\a') != -1
+endfunction
+
+function! Start_with_upper(str)
+  return match(a:str,'[A-Z]') == 0
+endfunction
+
+function! Capitalize(str)
+  return toupper(a:str[0]) . a:str[1:]
+endfunction
+
+function! Minimalize(str)
+  return tolower(a:str[0]) . a:str[1:]
+endfunction
+
 " Ouroboros entry point
 "
 " Replace the word under the cursor by the next word define in the first entry
@@ -85,14 +127,42 @@ endfunction
 " footer notifying that no replacement has been found).
 function! Ouroboros()
   try
+    " retrieve word under cursor
     let l:old_word = expand("<cword>")
-    let l:candidates = Ouroboros_candidates(l:old_word)
-    if strlen(l:candidates) > 0
-      let l:new_word = Ouroboros_new_word(l:old_word,l:candidates)
-      exe "normal ciw" . l:new_word
-    else
-      echo 'Ouroboros failure: no entry found for "' . l:old_word . '"'
+
+    " check for empty strings
+    if strlen(l:old_word) == 0
+      echo 'Ouroboros failure: cannot replace an empty string'
+      return
     endif
+
+    " look for direct candidates
+    let l:new_word = Ouroboros_find(l:old_word)
+    if strlen(l:new_word) > 0
+      call Ouroboros_replace(l:new_word)
+      return
+    endif
+
+    " look for upper case candidates
+    if Has_alpha(l:old_word) && Is_upper(l:old_word)
+      let l:new_word = toupper(Ouroboros_find(tolower(l:old_word)))
+      if strlen(l:new_word) > 0
+        call Ouroboros_replace(l:new_word)
+        return
+      endif
+    endif
+
+    " look for candidates with a leading uppercase letter only
+    if Start_with_upper(l:old_word)
+      let l:new_word = Capitalize(Ouroboros_find(Minimalize(l:old_word)))
+      if strlen(l:new_word) > 0
+        call Ouroboros_replace(l:new_word)
+        return
+      endif
+    endif
+
+    " no candidates found
+    echo 'Ouroboros failure: no entry found for "' . l:old_word . '"'
   catch
     echo 'Ouroboros error: ' . v:exception
   endtry
