@@ -1,4 +1,3 @@
-" Last Change: 2021 Jul 1
 " Maintainer:	Leo Carpenter <leo.carpenter.pro@gmail.com>
 " License: see doc/ouroboros.txt
 
