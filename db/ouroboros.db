@@ -15,3 +15,7 @@ good bad
 old new
 empty full
 min max
+inclusive exclusive
+under over
+first last
+alpha beta delta
