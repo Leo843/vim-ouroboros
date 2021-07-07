@@ -34,6 +34,27 @@ automated by setting b:ouroboros_db in files defined in ftplugin/. The example
 below set a specific database for cpp files.
 
   ~/.vim/ftplugin/cpp.vim
-    ~
-    ~ let b:ouroboros_db=['~/.ouroboros_cpp.db']
-    ~
+    -
+    - let b:ouroboros_db=['~/.ouroboros_cpp.db']
+    -
+
+Database files contains sequences of words. Each sequence is written on a single
+line and defines words that are part of the same replacement group. New
+replacement groups can be added to a database file by simply adding lines to it.
+
+  ouroboros.db
+    - ...
+    - true false
+    - begin end
+    - min max
+    - start stop
+    - ...
+
+UPPERCASE                                       *ouroboros-uppercase*
+
+There is no need to add duplicate entries in a database file to handle uppercase
+strings (e,g, true/TRUE, begin/BEGIN, ...) or strings staring with a capital
+letter (e.g. true/True, begin/Begin, ...). If a direct match cannot be found
+while looking for a replacement, additionnal searches will be performed for
+strings containg uppercase letters only and strings starting with a capital
+letter.
