@@ -61,6 +61,27 @@ Here is a non-exhaustive list of common replacement in C++
 - <, =<, >, =>
 - vector, list
 
+## Upper case letters
+
+### String with upper case letters only
+
+When the string being replaced contains upper case letters only (e.g. TRUE, MIN,
+TO_LOWER, ...), Ouroboros is able to replace them even if the database only
+contains the lower case version of the string.
+
+### String starting with a capital letter
+
+When the string being replaced starts with an upper case letter (e.g. True,
+Success, Begin, ...), Ouroboros is able to replace them even if the string in
+the database does not start with an upper case letter.
+
+### Replacement order
+
+Ouroboros always attempts to find a replacement for a string with an exact match
+first. If it fails, then Ouroboros attempts to find a replacement for a string
+with only upper case letters. If it also fails, then Ouroboros attempts to find
+a replacement for string that starts with a capital letter.
+
 ## Installation
 
 Install using your favorite package manager, or use Vim's built-in package
@@ -125,6 +146,6 @@ ouroboros-database` for more information).
 
 ## Roadmap
 
-- [ ] Replace string starting with an upper case letter.
-- [ ] Replace string containing upper case letters only.
+- [x] Replace string starting with an upper case letter.
+- [x] Replace string containing upper case letters only.
 - [ ] Handle text objects instead of words only.
