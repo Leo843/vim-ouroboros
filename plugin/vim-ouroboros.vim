@@ -59,6 +59,7 @@ function! Ouroboros_databases()
     return b:ouroboros_db
   else
     return g:ouroboros_db
+  endif
 endfunction
 
 " preconditions:
@@ -77,17 +78,69 @@ function! Ouroboros_candidates(word)
 endfunction
 
 " preconditions:
-"   a:str is a string without whitespaces ro tabulations.
+"   a:str is a string without whitespaces or tabulations.
+" postconditions:
+"   A replacement string is returned. If no replacement is found, an empty
+"   string is returned.
+function! Ouroboros_find_straight(str)
+  let l:candidates = Ouroboros_candidates(a:str)
+  if strlen(l:candidates) > 0
+    return Ouroboros_new_word(a:str,l:candidates)
+  else
+    return ''
+  endif
+endfunction
+
+" preconditions:
+"   a:str is a string without whitespaces or tabulations containing upper case
+"   letters only and non-alphanumerical characters.
+" postconditions:
+"   A replacement string is returned. If no replacement is found, an empty
+"   string is returned.
+function! Ouroboros_find_upper(str)
+  return toupper(Ouroboros_find_straight(tolower(a:str)))
+endfunction
+
+" preconditions:
+"   a:str is a string without whitespaces or tabulations staring with a capital
+"   letter.
+" postconditions:
+"   A replacement string is returned. If no replacement is found, an empty
+"   string is returned.
+function! Ouroboros_find_capital(str)
+  return Capitalize(Ouroboros_find_straight(Minimalize(a:str)))
+endfunction
+
+" preconditions:
+"   a:str is a string without whitespaces or tabulations.
 " postconditions:
 "   A replacement string is returned. If no replacement is found, an empty
 "   string is returned.
 function! Ouroboros_find(str)
-    let l:candidates = Ouroboros_candidates(a:str)
-    if strlen(l:candidates) > 0
-      return Ouroboros_new_word(a:str,l:candidates)
-    else
-      return ''
+
+  " look for direct match
+  let l:replacement = Ouroboros_find_straight(a:str)
+  if strlen(l:replacement) > 0
+    return l:replacement
+  endif
+
+  " look for a match with upper case letters
+  if Has_alpha(a:str) && Is_upper(a:str)
+    let l:replacement = Ouroboros_find_upper(a:str)
+    if strlen(l:replacement) > 0
+      return l:replacement
     endif
+  endif
+
+  " look for a match with a leading uppercase letter only
+  if Start_with_upper(a:str)
+    let l:replacement = Ouroboros_find_capital(a:str)
+    if strlen(l:replacement) > 0
+      return l:replacement
+    endif
+  endif
+
+  return ''
 endfunction
 
 " preconditions:
@@ -98,22 +151,28 @@ function! Ouroboros_replace(str)
   exe "normal ciw" . a:str
 endfunction
 
+" Return 1 if a:str contains uppercase letters only (and/or non-alpha
+" characters), otherwise return 0.
 function! Is_upper(str)
   return a:str == toupper(a:str)
 endfunction
 
+" Return 1 if a:str contains at least one alpha character, otherwise return 0.
 function! Has_alpha(str)
   return match(a:str,'\a') != -1
 endfunction
 
+" Return 1 if a:str starts with an uppercase letter.
 function! Start_with_upper(str)
   return match(a:str,'[A-Z]') == 0
 endfunction
 
+" Return a copy of a:str that starts with an upper case letter.
 function! Capitalize(str)
   return toupper(a:str[0]) . a:str[1:]
 endfunction
 
+" Return a copy of a:str that starts with a lower case letter.
 function! Minimalize(str)
   return tolower(a:str[0]) . a:str[1:]
 endfunction
@@ -135,29 +194,10 @@ function! Ouroboros()
       return
     endif
 
-    " look for direct candidates
-    let l:new_word = Ouroboros_find(l:old_word)
-    if strlen(l:new_word) > 0
-      call Ouroboros_replace(l:new_word)
+    let l:new_str = Ouroboros_find(l:old_word)
+    if strlen(l:new_str) > 0
+      call Ouroboros_replace(l:new_str)
       return
-    endif
-
-    " look for upper case candidates
-    if Has_alpha(l:old_word) && Is_upper(l:old_word)
-      let l:new_word = toupper(Ouroboros_find(tolower(l:old_word)))
-      if strlen(l:new_word) > 0
-        call Ouroboros_replace(l:new_word)
-        return
-      endif
-    endif
-
-    " look for candidates with a leading uppercase letter only
-    if Start_with_upper(l:old_word)
-      let l:new_word = Capitalize(Ouroboros_find(Minimalize(l:old_word)))
-      if strlen(l:new_word) > 0
-        call Ouroboros_replace(l:new_word)
-        return
-      endif
     endif
 
     " no candidates found
