@@ -17,7 +17,7 @@ let s:default_database_filepath='' . s:this_plugin_root_dir . '/db/ouroboros.db'
 " Reset g:ouroboros_db with the default database path
 function! Ouroboros_set_default_database()
   if !filereadable(s:default_database_filepath)
-    echoerr 'Ouroboros error: '.s:default_database_filepath.' cannot be read'
+    echoerr 'Ouroboros: '.s:default_database_filepath.' cannot be read'
   endif
   let g:ouroboros_db=[s:default_database_filepath]
 endfunction
@@ -132,7 +132,7 @@ function! Ouroboros()
 
     " check for empty strings
     if strlen(l:old_word) == 0
-      echo 'Ouroboros failure: cannot replace an empty string'
+      echo 'Ouroboros: cannot replace an empty string'
       return
     endif
 
@@ -162,8 +162,8 @@ function! Ouroboros()
     endif
 
     " no candidates found
-    echo 'Ouroboros failure: no entry found for "' . l:old_word . '"'
+    echo 'Ouroboros: no entry found for "' . l:old_word . '"'
   catch
-    echo 'Ouroboros error: ' . v:exception
+    echo 'Ouroboros: ' . v:exception
   endtry
 endfunction
