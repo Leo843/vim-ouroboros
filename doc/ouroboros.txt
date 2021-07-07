@@ -12,11 +12,19 @@ of words defined in a database file.
 
 ENTRYPOINT                                      *ouroboros-entrypoint*
 
-The entry point of the plugin is the function called Ouroboros(). No default
-mapping is provided, the user has to define one in order to use the plugin. Here
-is an example of such mapping using <leader>o as keyboard shortcut.
+Entry points of the plugin functions Ouroboros() and Ouroboros_motion().
+Function Ouroboros() is only able to replace the word under the cursor while
+Ouroboros_motion() is deigned to be used with text objects and vim motions.
 
+No default mappings are provided, the user has to define at least one in order
+to use the plugin. Here are some examples of such mappings.
+
+  " replace the word under the cursor
   nmap <silent> <leader>o :call Ouroboros()<CR>
+
+  " replace a text object using vim motions
+  nmap <silent> \ :set opfunc=Ouroboros_motion<CR>g@
+  vmap <silent> \ :<C-U>call Ouroboros_motion(visualmode())<CR>
 
 DATABASE                                        *ouroboros-database*
 

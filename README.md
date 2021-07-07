@@ -1,7 +1,7 @@
 # vim-ouroboros
 
-Replace the word under the cursor by other words with related (often
-symmetrical) meanings (e.g. true/false, begin/end, insert/remove,
+Replace the word under the cursor (or a text object) by other words with related
+(often symmetrical) meanings (e.g. true/false, begin/end, insert/remove,
 one/two/three/four/..., ...). The replacement is performed cyclically based on a
 list of words defined in a database file.
 
@@ -96,14 +96,19 @@ vim -u NONE -c "helptags vim-ouroboros/doc" -c q
 
 ## Configuration
 
-### How to define a mapping for Ouroboros
+### How to define mappings for Ouroboros
 
-No default mapping is provided, one has to be defined (usually in `.vimrc`).
-The entrypoint of the plugin is the function Ouroboros() and can be mapped as
-shown below.
+No default mapping is provided, at least one has to be defined (usually in
+`.vimrc`). Entrypoints are functions Ouroboros() and Ouroboros_motion(), they
+can be mapped as shown below.
 
 ```
+" replace the word under the cursor
 nmap <silent> <leader>o :call Ouroboros()<CR>
+
+" replace a text object using vim motions
+nmap <silent> \ :set opfunc=Ouroboros_motion<CR>g@
+vmap <silent> \ :<C-U>call Ouroboros_motion(visualmode())<CR>
 ```
 
 ### How to set database files
@@ -148,4 +153,4 @@ ouroboros-database` for more information).
 
 - [x] Replace string starting with an upper case letter.
 - [x] Replace string containing upper case letters only.
-- [ ] Handle text objects instead of words only.
+- [x] Handle text objects instead of words only.

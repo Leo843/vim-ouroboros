@@ -69,7 +69,7 @@ endfunction
 "   line containing a:word is returned, otherwise, an empty string is returned.
 function! Ouroboros_candidates(word)
   for db in Ouroboros_databases()
-    let l:candidates=matchstr(readfile(expand(db)), a:word)
+    let l:candidates=matchstr(readfile(expand(db)), '\(^\|.*\s\)'.a:word.'\(\s.*\|$\)')
     if strlen(l:candidates) > 0
       return l:candidates
     endif
@@ -117,7 +117,6 @@ endfunction
 "   A replacement string is returned. If no replacement is found, an empty
 "   string is returned.
 function! Ouroboros_find(str)
-
   " look for direct match
   let l:replacement = Ouroboros_find_straight(a:str)
   if strlen(l:replacement) > 0
@@ -204,5 +203,84 @@ function! Ouroboros()
     echo 'Ouroboros: no entry found for "' . l:old_word . '"'
   catch
     echo 'Ouroboros: ' . v:exception
+  endtry
+endfunction
+
+" preconditions:
+"   a:type is either 'v' or 'char'. If a:type is 'v' then marks `<, `> must be
+"   set. If a:type is 'char' then marks `[, `] must be set.
+" postconditions:
+"   Return a string containing the text captured marks `<, `> or `[, `]
+"   depending on a:type.
+function! Ouroboros_motion_get_text(type)
+  let l:sel_save = &selection
+  let &selection = "inclusive"
+  let l:reg_save = @@
+
+  if a:type ==# 'v'
+    silent exe "normal! `<v`>y"
+  elseif a:type ==# 'char'
+    silent exe "normal! `[v`]y"
+  else
+    throw 'Ouroboros: linewise/blockwise replacements are not possible'
+  endif
+
+  let l:text = @@
+  let &selection = l:sel_save
+  let @@ = l:reg_save
+  return l:text
+endfunction
+
+" preconditions:
+"   a:type is either 'v' or 'char'. If a:type is 'v' then marks `<, `> must be
+"   set. If a:type is 'char' then marks `[, `] must be set.
+" postconditions:
+"   Set the text inside marks `<, `> or `[, `] (depending on a:type) by a:text.
+function! Ouroboros_motion_set_text(type,text)
+  let l:sel_save = &selection
+  let &selection = "inclusive"
+  let l:reg_save = @@
+
+  if a:type ==# 'v'
+    silent exe "normal! `<v`>c".a:text."\<Esc>`<"
+  elseif a:type ==# 'char'
+    silent exe "normal! `[v`]c".a:text."\<Esc>`["
+  else
+    throw 'Ouroboros: linewise/blockwise motions are not possible'
+  endif
+
+  let l:text = @@
+  let &selection = l:sel_save
+  let @@ = l:reg_save
+  return l:text
+endfunction
+
+" Ouroboros entry point for motion mapping
+"
+" Replace the text captured from a vim motion by the next word define in the
+" first entry in the Ouroboros database files. If the text is not define in
+" Ouroboros database files, then nothing happens (a message is printed in vim
+" footer notifying that no replacement has been found).
+function! Ouroboros_motion(type)
+  try
+    let l:old_text = Ouroboros_motion_get_text(a:type)
+    " remove whitespaces at the start and the end
+    let l:old_str = substitute(l:old_text,'\s\+$\|^\s\+','','g')
+    " abort if the string contains whitespaces
+    if match(l:old_str,'\s') != -1
+      throw 'Ouroboros: using strings containing whitespaces is not possible'
+    endif
+    " look for a replacement
+    let l:new_str = Ouroboros_find(l:old_str)
+    if strlen(l:new_str) > 0
+      " put back whitespaces at the start and the end
+      let l:new_text = substitute(l:old_text,l:old_str,l:new_str,'')
+      " change the text from the vim motion
+      call Ouroboros_motion_set_text(a:type,l:new_text)
+    else
+      throw 'Ouroboros: no entry found for "' . l:old_str . '"'
+    endif
+  catch
+    echo v:exception
   endtry
 endfunction
