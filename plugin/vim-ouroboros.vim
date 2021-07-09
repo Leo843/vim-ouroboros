@@ -11,7 +11,7 @@ let s:this_script_filepath=resolve(expand('<sfile>:p'))
 " path to the root dir of the plugin
 let s:this_plugin_root_dir=fnamemodify(s:this_script_filepath, ':h:h')
 " path to the default database
-let s:default_database_filepath='' . s:this_plugin_root_dir . '/db/ouroboros.db'
+let s:default_database_filepath='' . s:this_plugin_root_dir . '/db/default.db'
 
 " Reset g:ouroboros_db with the default database path
 function! Ouroboros_set_default_database()

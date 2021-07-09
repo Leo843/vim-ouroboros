@@ -115,7 +115,7 @@ vmap <silent> \ :<C-U>call Ouroboros_motion(visualmode())<CR>
 
 Ouroboros uses files found in `g:ouroboros_db` to look for a replacement. This
 list of files can be set in `.vimrc`. By default Ouroboros uses a default
-database located at `<plugin-root>/db/ouroboros.db` (where `<plugin-root>` is
+database located at `<plugin-root>/db/default.db` (where `<plugin-root>` is
 the root directory of the plugin and depends on the plugin manager).
 
 ```

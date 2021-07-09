@@ -30,7 +30,7 @@ DATABASE                                        *ouroboros-database*
 
 The databases containing replacement words is a list of files and their
 locations are set in global variable g:ouroboros_db. By default the list
-contained one location set to <plugin-path>/db/ouroboros.db. The user can change
+contained one location set to <plugin-path>/db/default.db. The user can change
 this location as shown below.
 
   let g:ouroboros_db=['path/to/first/file','path/to/second/file']
@@ -50,7 +50,7 @@ Database files contains sequences of words. Each sequence is written on a single
 line and defines words that are part of the same replacement group. New
 replacement groups can be added to a database file by simply adding lines to it.
 
-  ouroboros.db
+  default.db
     - ...
     - true false
     - begin end
