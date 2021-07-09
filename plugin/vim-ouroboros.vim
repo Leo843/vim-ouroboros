@@ -27,6 +27,11 @@ if !exists("g:ouroboros_db")
   call Ouroboros_set_default_database()
 endif
 
+" Return the directory from which the plugin was loaded.
+function! Ouroboros_get_root_dir()
+  return s:this_plugin_root_dir
+endfunction
+
 " preconditions:
 "   a:candidates is a string containings words separated by spaces/tabs and
 "   a:word is a one of those words.

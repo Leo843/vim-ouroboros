@@ -1,0 +1,28 @@
+true false
+begin end
+first last
+public protected private
+class struct
+front back
+push_front push_back
+pop_front pop_back
+signed unsigned
+float double
+uint8_t uint16_t uint32_t uint64_t
+int8_t int16_t int32_t int64_t
+if else
+== !=
+< =< > =>
+vector list
+error warning info
+size length count
+server client
+localhost 127.0.0.1
+stdout stderr stdin
+cout cerr cin
++= -=
+rhs lhs
+puts printf
+++ --
+ostringstream ofstream
+istringstream ifstream

@@ -1,6 +1,7 @@
 *.swp
 /*
 !/doc
+!/ftplugin
 !/plugin
 !/db
 !/test
