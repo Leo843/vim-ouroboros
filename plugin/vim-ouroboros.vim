@@ -147,7 +147,7 @@ endfunction
 " postconditions:
 "   The word under the cursor is replaced by a:str.
 function! Ouroboros_replace(str)
-  exe "normal ciw" . a:str
+  exe "normal ciw" . a:str . "\<Esc>`["
 endfunction
 
 " Return 1 if a:str contains uppercase letters only (and/or non-alpha
