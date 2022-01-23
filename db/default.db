@@ -59,3 +59,5 @@ open close
 remote local
 acquire release
 emissions reception
+yes no
+import export
